@@ -10,4 +10,4 @@ services:
     build: api
     command: npm start
     ports:
-      - "8080:8080"
+      - "3333:3333"
