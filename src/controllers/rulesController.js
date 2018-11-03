@@ -16,30 +16,30 @@ const RulesController = function () {
 
         try {
 
-            const type = req.body.type;
-            const start_date = moment(req.body.start_date, "DD/MM/YYYY");
-            const end_date = moment(req.body.end_date, "DD/MM/YYYY");
+            const type = req.body.type; // oneDay | daily | weekly | biweekly | monthly
+            const startDate = moment(req.body.startDate, "DD/MM/YYYY");
+            const endDate = moment(req.body.endDate, "DD/MM/YYYY");
             const intervals = req.body['intervals'];
 
             const newRule = {
                 type,
-                start_date,
-                end_date,
+                startDate,
+                endDate,
             };
 
             const ruleResult = await Rule.create(newRule);
             const ruleId = ruleResult.id;
 
             let promises = [];
-            for (let i = 0; i < intervals.length; i++) {
-                let interval = intervals[i];
 
-                const start_time = interval['start_time'];
-                const end_time = interval['end_time'];
+            for (const interval of intervals) {
+
+                const startTime = interval['startTime'];
+                const endTime = interval['endTime'];
 
                 const newInterval = {
-                    start_time,
-                    end_time,
+                    startTime,
+                    endTime,
                     ruleId
                 };
                 promises.push(Interval.create(newInterval))

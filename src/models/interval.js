@@ -1,8 +1,8 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Interval = sequelize.define('Interval', {
-        start_time: DataTypes.TIME,
-        end_time: DataTypes.TIME
+        startTime: DataTypes.TIME,
+        endTime: DataTypes.TIME
     }, {});
     Interval.associate = function (models) {
         // associations can be defined here
