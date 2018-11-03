@@ -1,0 +1,13 @@
+version: '3'
+services:
+#  mongo:
+#    image: mongo
+#    restart: always
+#    command: --smallfiles
+#    ports:
+#      - "27017:27017"
+  api:
+    build: api
+    command: npm start
+    ports:
+      - "8080:8080"

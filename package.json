@@ -1,0 +1,40 @@
+{
+  "name": "clinical-api",
+  "version": "1.0.0",
+  "description": "clinical api",
+  "main": "app.js",
+  "private": true,
+  "author": {
+    "name": "Danilo Pedrosa.",
+    "email": "dmop@cin.ufpe.br"
+  },
+  "scripts": {
+    "start": "npm update && pm2 start app.js --name clinical-api --kill-timeout 30000 -- --color --watch --log-date-format=\"YYYY-MM-DD HH:mm:ss\"  && pm2 log",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api",
+    "node",
+    "restful",
+    "js"
+  ],
+  "dependencies": {
+    "bluebird": "^3.5.2",
+    "body-parser": "^1.18.2",
+    "crypto-js": "^3.1.9-1",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.4",
+    "morgan": "^1.9.1",
+    "pg": "^7.6.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.41.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "github.com:albinojunior/phonebook"
+  }
+}
