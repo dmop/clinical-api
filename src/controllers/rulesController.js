@@ -6,9 +6,16 @@ const moment = require('moment');
 
 const RulesController = function () {
 
+    /**
+     *
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
     const create = async function (req, res) {
 
         try {
+
             const type = req.body.type;
             const start_date = moment(req.body.start_date, "DD/MM/YYYY");
             const end_date = moment(req.body.end_date, "DD/MM/YYYY");
@@ -54,6 +61,12 @@ const RulesController = function () {
         }
     };
 
+    /**
+     *
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
     const remove = async function (req, res) {
         try {
             const ruleId = parseInt(req.params.id);
@@ -82,9 +95,30 @@ const RulesController = function () {
         }
     };
 
+    /**
+     *
+     * @param req
+     * @param res
+     * @returns {Promise<void>}
+     */
+    const all = async function (req, res) {
+        try {
+            let rules = await Rule.all();
+
+            res.status(200).send(rules);
+        } catch (err) {
+            res.status(400)
+                .send({
+                    message: err.message,
+                    error: true
+                });
+        }
+    };
+
     return {
         create,
-        remove
+        remove,
+        all
     }
 };
 
