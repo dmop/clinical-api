@@ -7,8 +7,8 @@ const rules = require('../src/controllers/rulesController')();
 // Listar regras
 // router.get('/',       controller.list);
 //Cadastro de regra de atendimento
-router.post('/', rules.create);
+router.post('/create', rules.create);
 // Apagar regras
-// router.delete('/:id', controller.remove);
+router.delete('/:id', rules.remove);
 
 module.exports = router;

@@ -1,12 +1,18 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('Rule_Schedules', {
+        return queryInterface.createTable('Intervals', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
+            },
+            start_time: {
+                type: Sequelize.TIME
+            },
+            end_time: {
+                type: Sequelize.TIME
             },
             createdAt: {
                 allowNull: false,
@@ -16,27 +22,18 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE
             },
-            scheduleId: {
-                type: Sequelize.INTEGER,
-                onDelete: 'CASCADE',
-                references: {
-                    model: 'Schedules',
-                    key: 'id',
-                    as: 'scheduleId',
-                }
-            },
-            rulesId: {
+            ruleId: {
                 type: Sequelize.INTEGER,
                 onDelete: 'CASCADE',
                 references: {
                     model: 'Rules',
                     key: 'id',
                     as: 'ruleId',
-                }
-            }
+                },
+            },
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('Rule_Schedules');
+        return queryInterface.dropTable('Intervals');
     }
 };
