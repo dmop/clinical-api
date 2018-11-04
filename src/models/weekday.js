@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
     const WeekDay = sequelize.define('WeekDay', {
         weekDayNumber: DataTypes.INTEGER,
-        weekDay: DataTypes.STRING
+        weekDayText: DataTypes.STRING
     }, {});
     WeekDay.associate = function (models) {
         // associations can be defined here

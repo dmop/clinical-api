@@ -2,7 +2,9 @@
 
 const Rule = require('../models').Rule;
 const Interval = require('../models').Interval;
+const WeekDay = require('../models').WeekDay;
 const moment = require('moment');
+const {weekDayToWeekNumber} = require('../helpers');
 
 const RulesController = function () {
 
@@ -20,6 +22,11 @@ const RulesController = function () {
             const startDate = moment(req.body.startDate, "DD/MM/YYYY");
             const endDate = moment(req.body.endDate, "DD/MM/YYYY");
             const intervals = req.body['intervals'];
+            let weekDays = [{"day": "all"}];
+
+            if (type !== 'oneDay' && type !== 'daily') {
+                weekDays = req.body['weekDays'];
+            }
 
             const newRule = {
                 type,
@@ -30,10 +37,8 @@ const RulesController = function () {
             const ruleResult = await Rule.create(newRule);
             const ruleId = ruleResult.id;
 
-            let promises = [];
-
+            let intervalsPromises = [];
             for (const interval of intervals) {
-
                 const startTime = interval['startTime'];
                 const endTime = interval['endTime'];
 
@@ -42,9 +47,24 @@ const RulesController = function () {
                     endTime,
                     ruleId
                 };
-                promises.push(Interval.create(newInterval))
+                intervalsPromises.push(Interval.create(newInterval))
             }
-            await Promise.all(promises);
+            await Promise.all(intervalsPromises);
+
+            let weekDaysPromises = [];
+            for (const weekDay of weekDays) {
+                const weekDayText = weekDay['day'];
+                let weekDayNumber = 99;
+
+                if (weekDayText !== 'all') weekDayNumber = weekDayToWeekNumber(weekDayText);
+
+                const newDay = {
+                    weekDayNumber,
+                    weekDayText
+                };
+                weekDaysPromises.push(WeekDay.create(newDay))
+            }
+            await Promise.all(weekDaysPromises);
 
             res.status(200)
                 .send({

@@ -1,13 +1,14 @@
 version: '3'
 services:
-#  mongo:
-#    image: mongo
-#    restart: always
-#    command: --smallfiles
-#    ports:
-#      - "27017:27017"
   api:
     build: api
+    depends_on:
+      - postgres
     command: npm start
     ports:
-      - "3333:3333"
+    - "3333:3333"
+    - "9229:9229"
+  postgres:
+    image: postgres:9.6.8-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
