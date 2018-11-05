@@ -2,7 +2,7 @@
 
 const Rule = require('../models').Rule;
 const Interval = require('../models').Interval;
-const WeekDay = require('../models').WeekDay;
+const Attendance = require('../models').Attendance;
 const moment = require('moment');
 const {weekDayToWeekNumber} = require('../helpers');
 
@@ -19,52 +19,52 @@ const RulesController = function () {
         try {
 
             const type = req.body.type; // oneDay | daily | weekly | biweekly | monthly
-            const startDate = moment(req.body.startDate, "DD/MM/YYYY");
-            const endDate = moment(req.body.endDate, "DD/MM/YYYY");
             const intervals = req.body['intervals'];
-            let weekDays = [{"day": "all"}];
-
+            const day = type === 'oneDay' ? moment(req.body.day, "DD/MM/YYYY") : null;
+            let attendanceDays = [{"day": "all"}];
             if (type !== 'oneDay' && type !== 'daily') {
-                weekDays = req.body['weekDays'];
+                attendanceDays = req.body['weekDays'];
+            }
+
+            if (day && day.isBefore(moment())) {
+                throw new Error('Data inválida!')
             }
 
             const newRule = {
                 type,
-                startDate,
-                endDate,
+                day
             };
 
             const ruleResult = await Rule.create(newRule);
             const ruleId = ruleResult.id;
 
-            let intervalsPromises = [];
-            for (const interval of intervals) {
-                const startTime = interval['startTime'];
-                const endTime = interval['endTime'];
+            await Promise.all(intervals.map(async (interval) => {
+                    const startTime = interval['startTime'];
+                    const endTime = interval['endTime'];
 
-                const newInterval = {
-                    startTime,
-                    endTime,
-                    ruleId
-                };
-                intervalsPromises.push(Interval.create(newInterval))
-            }
-            await Promise.all(intervalsPromises);
+                    const newInterval = {
+                        startTime,
+                        endTime,
+                        ruleId
+                    };
+                    await Interval.create(newInterval)
+                })
+            );
 
-            let weekDaysPromises = [];
-            for (const weekDay of weekDays) {
-                const weekDayText = weekDay['day'];
-                let weekDayNumber = 99;
+            await Promise.all(attendanceDays.map(async (attendance) => {
+                    const weekDayText = attendance['day'];
+                    let weekDay = null;
 
-                if (weekDayText !== 'all') weekDayNumber = weekDayToWeekNumber(weekDayText);
+                    if (weekDayText !== 'all') weekDay = weekDayToWeekNumber(weekDayText);
 
-                const newDay = {
-                    weekDayNumber,
-                    weekDayText
-                };
-                weekDaysPromises.push(WeekDay.create(newDay))
-            }
-            await Promise.all(weekDaysPromises);
+                    const newAttendance = {
+                        weekDay,
+                        weekDayText,
+                        ruleId
+                    };
+                    await Attendance.create(newAttendance);
+                })
+            );
 
             res.status(200)
                 .send({
@@ -123,9 +123,35 @@ const RulesController = function () {
      */
     const all = async function (req, res) {
         try {
-            let rules = await Rule.all();
+            let rules = await Rule.findAll({
+                attributes: ['id', 'type', 'day']
+            });
+            let result = [];
+            await Promise.all(rules.map(async (rule) => {
+                    let interval = await Interval.findAll({
+                        where: {
+                            ruleId: rule.id
+                        },
+                        attributes: ['id', 'startTime', 'endTime']
+                    });
 
-            res.status(200).send(rules);
+                    let attendanceDays = await Attendance.findAll({
+                        where: {
+                            ruleId: rule.id
+                        },
+                        attributes: ['id', 'weekDay', 'weekDayText']
+                    });
+                    let day = rule.day ? moment(rule.day).format('DD-MM-YYYY') : null;
+                    result.push({id: rule.id, type: rule.type, day: day, intervals: interval, days: attendanceDays})
+                })
+            );
+
+            if (!result.length > 0) {
+                res.status(404).send({
+                    message: 'Regras não encontradas!',
+                });
+            }
+            res.status(200).send(result);
         } catch (err) {
             res.status(400)
                 .send({

@@ -9,8 +9,9 @@
     "email": "dmop@cin.ufpe.br"
   },
   "scripts": {
-    "start": "npm update && pm2 start app.js --name clinical-api --kill-timeout 30000 -- --color --watch --log-date-format=\"YYYY-MM-DD HH:mm:ss\"  && pm2 log",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run migrate &&  pm2 start app.js --name clinical-api --kill-timeout 30000 -- --color --watch --log-date-format=\"YYYY-MM-DD HH:mm:ss\"  && pm2 log",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "./node_modules/.bin/sequelize db:migrate"
   },
   "keywords": [
     "api",
@@ -31,7 +32,8 @@
     "morgan": "^1.9.1",
     "pg": "^7.6.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.41.0"
+    "sequelize": "^4.41.0",
+    "sequelize-cli": "^5.3.0"
   },
   "license": "MIT",
   "repository": {

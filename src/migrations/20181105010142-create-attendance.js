@@ -1,14 +1,14 @@
 'use strict';
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('WeekDays', {
+        return queryInterface.createTable('Attendances', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            weekDayNumber: {
+            weekDay: {
                 type: Sequelize.INTEGER
             },
             weekDayText: {
@@ -34,6 +34,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('WeekDays');
+        return queryInterface.dropTable('Attendances');
     }
 };

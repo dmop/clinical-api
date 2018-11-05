@@ -38,8 +38,26 @@ const weekDayToWeekNumber = function (weekDay) {
     return weekday[weekDay];
 };
 
+/**
+ *
+ * @param startDate
+ * @param endDate
+ * @param format
+ * @returns {Array}
+ */
+const enumerateDaysBetweenDates = function (startDate, endDate, format = 'DD-MM-YYYY') {
+    let now = startDate.clone(), dates = [];
+
+    while (now.isSameOrBefore(endDate)) {
+        dates.push(now.format(format));
+        now.add(1, 'days');
+    }
+    return dates;
+};
+
 
 module.exports = {
     weekNumberToWeekday,
-    weekDayToWeekNumber
+    weekDayToWeekNumber,
+    enumerateDaysBetweenDates
 };
