@@ -23,7 +23,7 @@ const RulesController = function () {
             const day = type === 'oneDay' ? moment(req.body.day, "DD/MM/YYYY") : null;
             let attendanceDays = [{"day": "all"}];
             if (type !== 'oneDay' && type !== 'daily') {
-                attendanceDays = req.body['weekDays'];
+                attendanceDays = req.body['attendanceDays'];
             }
 
             if (day && day.isBefore(moment())) {
