@@ -1,4 +1,5 @@
 'use strict';
+const moment = require('moment');
 
 /**
  *
@@ -55,9 +56,26 @@ const enumerateDaysBetweenDates = function (startDate, endDate, format = 'DD-MM-
     return dates;
 };
 
+const weekOfMonth = function (m) {
+    return m.week() - moment(m).startOf('month').week() + 1;
+};
+
+const getISOWeekInMonth = function (date) {
+    // Copy date so don't affect original
+    let d = new Date(+date);
+    if (isNaN(d)) return;
+    // Move to previous Monday
+    d.setDate(d.getDate() - d.getDay() + 1);
+    // Week number is ceil date/7
+    // return {month: +d.getMonth()+1,
+    //     week: Math.ceil(d.getDate()/7)};
+    return Math.ceil((d.getDate() / 7)+1);
+};
 
 module.exports = {
     weekNumberToWeekday,
     weekDayToWeekNumber,
-    enumerateDaysBetweenDates
+    enumerateDaysBetweenDates,
+    weekOfMonth,
+    getISOWeekInMonth
 };

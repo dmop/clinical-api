@@ -23,6 +23,8 @@ Now browse to the app at `http://localhost:3333`.
 
 You can use docker to run the project.
 
+1. Alter host from '127.0.0.1' to 'postgres' in src/config/database.js
+
 Follow this instructions to install docker on ubuntu
 ```
 sudo apt-get update
