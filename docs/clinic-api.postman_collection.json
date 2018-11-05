@@ -1,0 +1,165 @@
+{
+	"variables": [],
+	"info": {
+		"name": "clinic-api",
+		"_postman_id": "28dcef61-b109-f004-1cb4-abbd4303eb7d",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "rule removal",
+			"request": {
+				"url": "localhost:3333/rules/7",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "rule listing",
+			"request": {
+				"url": "localhost:3333/rules",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "intervals listing",
+			"request": {
+				"url": "localhost:3333/intervals",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"startDate\":\"24/12/2018\",\"endDate\":\"30/12/2018\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "create rule - oneDay",
+			"request": {
+				"url": "localhost:3333/rules/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"type\":\"oneDay\",\"intervals\":[{ \"startTime\": \"08:30\", \"endTime\": \"09:10\"}],\"day\":\"25/12/2018\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "create rule - daily",
+			"request": {
+				"url": "localhost:3333/rules/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"type\":\"daily\",\"intervals\":[{ \"startTime\": \"09:20\", \"endTime\": \"10:00\"}]}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "create rule - weekly",
+			"request": {
+				"url": "localhost:3333/rules/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"type\":\"weekly\",\"intervals\":[{ \"startTime\": \"10:20\", \"endTime\": \"10:40\"}, { \"startTime\": \"10:50\", \"endTime\": \"11:30\"}],\"attendanceDays\":[{ \"day\": \"Monday\"},{ \"day\": \"Tuesday\"}]}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "create rule - biweekly",
+			"request": {
+				"url": "localhost:3333/rules/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"type\":\"biweekly\",\"intervals\":[{ \"startTime\": \"13:10\", \"endTime\": \"14:00\"}],\"attendanceDays\":[{ \"day\": \"Wednesday\"}]}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "create rule - monthly",
+			"request": {
+				"url": "localhost:3333/rules/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"type\":\"monthly\",\"intervals\":[{ \"startTime\": \"14:20\", \"endTime\": \"14:40\"},{ \"startime\": \"15:00\", \"endTime\": \"15:40\"}],\"attendanceDays\":[{ \"day\": \"Thursday\"}]}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
